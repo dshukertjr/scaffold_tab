@@ -32,7 +32,7 @@ class ScaffoldTab extends StatefulWidget {
 
 class _ScaffoldTabState extends State<ScaffoldTab> {
   int _tabIndex = 0;
-  List<int> _tabHistory = [];
+  List<int> _tabHistory = [0];
   List<Widget> _pages;
   List<GlobalKey<NavigatorState>> _navigatorKeys;
 
@@ -40,7 +40,10 @@ class _ScaffoldTabState extends State<ScaffoldTab> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        _navigatorKeys[_tabIndex].currentState.maybePop();
+        final poped = await _navigatorKeys[_tabIndex].currentState.maybePop();
+        if (!poped) {
+          _openPreviousTab();
+        }
         return false;
       },
       child: _InheritedScaffoldTab(
@@ -66,13 +69,13 @@ class _ScaffoldTabState extends State<ScaffoldTab> {
   }
 
   void _openPreviousTab() {
-    if (_tabHistory.length == 0) {
+    if (_tabHistory.length < 2) {
       return;
     }
+    _tabHistory.removeLast();
     setState(() {
       _tabIndex = _tabHistory.last;
     });
-    _tabHistory.removeLast();
   }
 
   @override
