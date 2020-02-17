@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 ///
 /// ScaffoldTab contains Scaffold as its child, so can also call Scaffold.of(context)
 class ScaffoldTab extends StatefulWidget {
+  final int tabIndex;
   final PreferredSizeWidget appBar;
   final Drawer drawer;
   final Widget bottomNavigationBar;
@@ -15,6 +16,7 @@ class ScaffoldTab extends StatefulWidget {
 
   const ScaffoldTab({
     Key key,
+    @required this.tabIndex,
     this.appBar,
     this.drawer,
     this.bottomNavigationBar,
@@ -31,8 +33,6 @@ class ScaffoldTab extends StatefulWidget {
 }
 
 class _ScaffoldTabState extends State<ScaffoldTab> {
-  int _tabIndex = 0;
-  List<int> _tabHistory = [0];
   List<Widget> _pages;
   List<GlobalKey<NavigatorState>> _navigatorKeys;
 
@@ -40,10 +40,7 @@ class _ScaffoldTabState extends State<ScaffoldTab> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        final poped = await _navigatorKeys[_tabIndex].currentState.maybePop();
-        if (!poped) {
-          _openPreviousTab();
-        }
+        _navigatorKeys[widget.tabIndex].currentState.maybePop();
         return false;
       },
       child: _InheritedScaffoldTab(
@@ -51,31 +48,9 @@ class _ScaffoldTabState extends State<ScaffoldTab> {
         drawer: widget.drawer,
         bottomNavigationBar: widget.bottomNavigationBar,
         pages: _pages,
-        tabIndex: _tabIndex,
-        parentOpenTab: _openTab,
-        parentOpenPreviousTab: _openPreviousTab,
+        tabIndex: widget.tabIndex,
       ),
     );
-  }
-
-  void _openTab(int index) {
-    if (index == _tabIndex) {
-      return;
-    }
-    _tabHistory.add(index);
-    setState(() {
-      _tabIndex = index;
-    });
-  }
-
-  void _openPreviousTab() {
-    if (_tabHistory.length < 2) {
-      return;
-    }
-    _tabHistory.removeLast();
-    setState(() {
-      _tabIndex = _tabHistory.last;
-    });
   }
 
   @override
@@ -108,8 +83,6 @@ class _InheritedScaffoldTab extends InheritedWidget {
   final Drawer drawer;
   final Widget bottomNavigationBar;
   final List<Widget> pages;
-  final void Function(int index) parentOpenTab;
-  final void Function() parentOpenPreviousTab;
   final int tabIndex;
 
   _InheritedScaffoldTab({
@@ -117,8 +90,6 @@ class _InheritedScaffoldTab extends InheritedWidget {
     @required this.drawer,
     @required this.bottomNavigationBar,
     @required this.pages,
-    @required this.parentOpenTab,
-    @required this.parentOpenPreviousTab,
     @required this.tabIndex,
   }) : super(
             child: Scaffold(
@@ -130,14 +101,6 @@ class _InheritedScaffoldTab extends InheritedWidget {
           drawer: drawer,
           bottomNavigationBar: bottomNavigationBar,
         ));
-
-  void openTab(int index) {
-    parentOpenTab(index);
-  }
-
-  void openPreviousTab() {
-    parentOpenPreviousTab();
-  }
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) {

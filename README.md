@@ -8,13 +8,9 @@ See [instructions](https://pub.dev/packages/tab_scaffold#-readme-tab-) on how to
 
 ## Usage
 
-### The Old Way
-
-When creating a `Scaffold` that uses a `BottomNavigationBar`, it's not
-uncommon to end up with code like this:
-
 ```dart
     ScaffoldTab(
+      tabIndex: _tabIndex
       pages: <Widget>[
         Center(child: Icon(Icons.home)),
         Center(child: Icon(Icons.train)),
@@ -44,10 +40,7 @@ uncommon to end up with code like this:
     );
 ```
 
-`ScaffoldTab` widget has openTab and openPreviousTab methods.
-openTab methods takes one int argument index, which is the index of the tab
-to be opened.
-openPreviousTab will go back to the previously opened tab if there are any.
+Pass a tabIndex to `ScaffoldTab` widget to specify the currently active index.
 
 `ScaffoldTab` also creates a `Scaffold` widget within, so Scaffold.of
 method is available for `ScaffoldTab` widget's descendent.

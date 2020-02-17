@@ -9,3 +9,7 @@
 ## [0.0.2+1] - Feb 17, 2020
 
 - Fixed a bug with openPreviousTab()
+
+## [0.1.1] - Feb 17, 2020
+
+- Removed openTab and openPreviousTab methods
