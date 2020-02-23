@@ -1,10 +1,10 @@
 name: tab_scaffold
 description: A new Flutter package project.
-version: 0.1.1
+version: 0.1.2
 homepage: https://github.com/dshukertjr/scaffold_tab
 
 environment:
-  sdk: '>=2.1.0 <3.0.0'
+  sdk: '>=2.3.0 <3.0.0'
 
 dependencies:
   flutter:

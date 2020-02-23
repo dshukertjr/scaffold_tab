@@ -13,6 +13,7 @@ class ScaffoldTab extends StatefulWidget {
   final Drawer drawer;
   final Widget bottomNavigationBar;
   final List<Widget> pages;
+  final bool extendBody;
 
   const ScaffoldTab({
     Key key,
@@ -21,6 +22,7 @@ class ScaffoldTab extends StatefulWidget {
     this.drawer,
     this.bottomNavigationBar,
     @required this.pages,
+    this.extendBody,
   })  : assert(pages != null),
         super(key: key);
 
@@ -49,6 +51,7 @@ class _ScaffoldTabState extends State<ScaffoldTab> {
         bottomNavigationBar: widget.bottomNavigationBar,
         pages: _pages,
         tabIndex: widget.tabIndex,
+        extendBody: widget.extendBody,
       ),
     );
   }
@@ -79,18 +82,13 @@ class _ScaffoldTabState extends State<ScaffoldTab> {
 }
 
 class _InheritedScaffoldTab extends InheritedWidget {
-  final PreferredSizeWidget appBar;
-  final Drawer drawer;
-  final Widget bottomNavigationBar;
-  final List<Widget> pages;
-  final int tabIndex;
-
   _InheritedScaffoldTab({
-    @required this.appBar,
-    @required this.drawer,
-    @required this.bottomNavigationBar,
-    @required this.pages,
-    @required this.tabIndex,
+    @required AppBar appBar,
+    @required Drawer drawer,
+    @required Widget bottomNavigationBar,
+    @required List<Widget> pages,
+    @required int tabIndex,
+    bool extendBody,
   }) : super(
             child: Scaffold(
           appBar: appBar,
@@ -100,6 +98,7 @@ class _InheritedScaffoldTab extends InheritedWidget {
           ),
           drawer: drawer,
           bottomNavigationBar: bottomNavigationBar,
+          extendBody: extendBody ?? false,
         ));
 
   @override

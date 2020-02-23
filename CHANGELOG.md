@@ -13,3 +13,7 @@
 ## [0.1.1] - Feb 17, 2020
 
 - Removed openTab and openPreviousTab methods
+
+## [0.1.2] - Feb 23, 2020
+
+- Added extendBody property
